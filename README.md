@@ -196,7 +196,7 @@ Pico Arcade is currently under development and will include a number of exciting
 
 In the pipeline, I will also introduce a compact, 'connector free' means of prototyping super-slim devices.  They will be easy to wire together and solder using a unique printed circuit board produced on a 3D printer and no special filaments.
 
-![alt text](https://github.com/timskillman/pico-arcade/blob/master/images/pico-arcade-game.jpg "Pico Arcade game with 3D printed circuit board")
+![alt text](https://github.com/timskillman/pico-arcade/blob/main/images/pico-arcade-game.jpg "Pico Arcade game with 3D printed circuit board")
 
 **Watch this space!**
 
