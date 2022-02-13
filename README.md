@@ -68,6 +68,7 @@ cd pico-arcade
 **5. Create the PicoArcade UF2 file**
 
 ```bash
+mkdir build
 cd build
 cmake ..
 make
