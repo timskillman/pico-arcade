@@ -23,7 +23,7 @@ Lasty, several games are included to kickstart your game writing experience;
 All the ibraries and games are written in C++ as Python is typically too slow.
 
 
-# How to compile the picoarcade.uf2
+# How to install and compile the picoarcade.uf2
 
 **1. Create a directory**
 
@@ -173,7 +173,8 @@ Note: It's very simple to add new screens of the type above although they need t
 - PIR sensor
 
 
-# Graphics Library improvements (over the Pimoroni graphics library)
+# Graphics Library improvements 
+(over the Pimoroni graphics library)
 
 The graphics library has the following improvements;
 
