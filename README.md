@@ -18,10 +18,10 @@ Lasty, several games are included to kickstart your game writing experience;
 - Asteroids
 - Roller ball (Using a GY271 sensor)
 
-All the ibraries and games are written in C++ as Python is typically too slow!
+All the ibraries and games are written in C++ as Python is typically too slow.
 
 
-#How to compile the picoarcade.uf2
+# How to compile the picoarcade.uf2
 
 **1. Create a directory**
 
