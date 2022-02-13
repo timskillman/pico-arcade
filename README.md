@@ -1,6 +1,6 @@
 # Pico Arcade Games & Libraries
 
-Pico Arcade is a derivative of the excellent Pimoroni Pico library and examples.  However, many of the drivers and libraries have had a complete overhaul in terms of supporting several new screens and sensors.  
+Pico Arcade is a derivative of the excellent [Pimoroni Pico library](https://github.com/pimoroni/pimoroni-pico/) and examples.  However, many of the drivers and libraries have had a complete overhaul in terms of supporting several new screens and sensors.  
 
 Furthermore, the graphics library is quite a bit faster due to using fixed-point arithmetic throughout.  There are several new features such as;
 
