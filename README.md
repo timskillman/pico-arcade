@@ -159,7 +159,7 @@ Note: It's very simple to add new screens of the type above although they need t
 - DS1302 RTC module (i2c)
 - HC05 Bluetooth LE 4.0 (i2c)
 - 16 channel Multiplexer (CD74HC4067)
-- GPS
+- GPS (GY-GPS6MV2)
 - Heart-rate monitor
 - PAM8302A audio amp
 
