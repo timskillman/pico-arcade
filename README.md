@@ -108,7 +108,7 @@ Sensors & mechanical:
 - Servo motor
 - PIR sensor
 
-#Why create such a library?
+# Why create such a library?
 
 This library aims to push beyond basic testing and experimentation to hopefully produce serious prototypes of hand-held devices, mini-game consoles, medical devices and so much more.
 
