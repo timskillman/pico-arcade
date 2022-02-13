@@ -192,7 +192,8 @@ It enables the use of low-cost components that are typically available from Pimo
 
 # Coming Soon!
 
-I have also developed a compact, 'connector free' means of prototyping super-slim devices that are easy to wire together and solder.
+I have also developed a compact, 'connector free' means of prototyping super-slim devices that are easy to wire together and solder using only a 3D printer and no special filaments.
+
 **Watch this space!**
 
 
