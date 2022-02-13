@@ -72,7 +72,7 @@ cmake ..
 make
 ```
 
-The UF2 file can be found in 'games' folder
+The 'picoarcade.uf2' file can be found in the 'games' folder
 
 
 
