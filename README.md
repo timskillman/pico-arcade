@@ -204,6 +204,9 @@ Pico Arcade is currently under development although there are several developmen
 
 ![alt text](https://github.com/timskillman/pico-arcade/blob/main/images/pico-arcade-game2.jpg "Pico Arcade game with 3D printed circuit board")
 
+![alt text](https://github.com/timskillman/pico-arcade/blob/main/images/pico-arcade-game3.jpg "Slim Pico Arcade game in case")
+
+
 **Watch this space!**
 
 
