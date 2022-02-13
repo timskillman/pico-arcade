@@ -188,6 +188,13 @@ This library aims to push beyond basic testing and experimentation to hopefully 
 
 Much of the heartache in configuring a project is also removed by using an Arduino style configuration file that enables/disables certain features and configurations.
 
+It enables the use of low-cost components that are typically available from Pimoroni, eBay, Alibaba and the likes.
+
+# Coming Soon!
+
+I have also developed a compact, 'connector free' means of prototyping super-slim devices that are easy to wire together and solder.
+**Watch this space!**
+
 
 
 
