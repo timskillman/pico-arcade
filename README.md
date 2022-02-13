@@ -77,8 +77,7 @@ The 'picoarcade.uf2' file can be found in the 'games' folder
 
 # How to change screen type and pin configurations
 
-Configuration settings are found in games/CMakeLists.txt
-Here you select between;
+Configuration settings are found in '[games/CMakeLists.txt](games/CMakeLists.txt)':
 
 **1. Display driver configuration**
 
