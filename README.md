@@ -194,9 +194,13 @@ It enables the use of low-cost components that are typically available from Pimo
 
 # Coming Soon!
 
-Pico Arcade is currently under development and will include a number of exciting software and hardware projects using various sensors. 
+Pico Arcade is currently under development although there are several developments soon to appear in this repo:
 
-In the pipeline, I will also introduce a compact, 'connector free' means of prototyping super-slim devices.  They will be easy to wire together and solder using a unique printed circuit board produced on a 3D printer and no special filaments.
+1. A number of exciting software and hardware projects using various sensors. 
+
+2. A cross-platform Pico emulator for faster development
+
+3. Introduce a compact, 'connector free' means of prototyping super-slim devices; easy to wire together and solder using a unique printed circuit board produced on a 3D printer and no special filaments ...
 
 ![alt text](https://github.com/timskillman/pico-arcade/blob/main/images/pico-arcade-game.jpg "Pico Arcade game with 3D printed circuit board")
 
