@@ -106,28 +106,28 @@ Here you select between;
 **3. Button pins**
 
 ```bash
-  BUTTON_A=11
-  BUTTON_B=21
-  BUTTON_X=13
-  BUTTON_Y=12
+  BUTTON_A=11   #Button A
+  BUTTON_B=21   #Button B
+  BUTTON_X=13   #Button X
+  BUTTON_Y=12   #Button Y
 
-  BUTTON_L=14
-  BUTTON_R=19
-  BUTTON_U=18
-  BUTTON_D=20
-  BUTTON_F=9
+  BUTTON_L=14   #Mini joystick Left
+  BUTTON_R=19   #Mini joystick Right
+  BUTTON_U=18   #Mini joystick Up
+  BUTTON_D=20   #Mini joystick Down
+  BUTTON_F=9    #Mini joystick Fire (middle click)
 ```
 
 **4. Games to compile**
 Note: Including ALL games will compile but over-run on Pico memory (resulting in blank screen!)
 
 ```bash
-  #GAME_ROLLERBALL
-  GAME_BREAKOUT
-  GAME_SCREENSAVERS
-  GAME_UPRISING
-  GAME_ASTEROIDS
-  #GAME_MISSILEBOMBER
+  #GAME_ROLLERBALL     # A rolling ball test routine for the GY521 accelerometer 
+  GAME_BREAKOUT        # Classic breakout
+  GAME_SCREENSAVERS    # Numerous screen savers that have been optimised for speed
+  GAME_UPRISING        # A demo 2.5D game
+  GAME_ASTEROIDS       # Classic arcade Asteroids
+  #GAME_MISSILEBOMBER  # Classic arcade Missile Command
 ```
 
 **5. Adding your own games/tests**
@@ -135,6 +135,7 @@ Note: Including ALL games will compile but over-run on Pico memory (resulting in
 'main.cpp' (games folder) sets up and controls which games are run
 
 See [Writing you own arcade game](writing_your_own_game.md) for more information.
+
 
 # Software support for Devices
 
@@ -149,7 +150,7 @@ Note: It's very simple to add new screens of the type above although they need t
 
 **Supported devices:**
 
-- GY271 (i2c) - gyro and accelerometer
+- GY521 (i2c) - gyro and accelerometer
 - mpu_9250 (SPI) - gyro and accelerometer
 
 **Further support coming for**
@@ -168,11 +169,25 @@ Note: It's very simple to add new screens of the type above although they need t
 - Servo motor
 - PIR sensor
 
+
+# Graphics Library improvements (over the Pimoroni graphics library)
+
+The graphics library has the following improvements;
+
+- Faster triangle rendering
+- Quadratic curves
+- Gradient-filled rectangles (multiple colours can be added and evenly spread through the fill)
+- General flood fill (can me quite expensive on memory!)
+- Textured triangle (not tested!)
+
+
 # Why create such a library?
 
 This library aims to push beyond basic testing and experimentation to hopefully produce serious prototypes of hand-held devices, mini-game consoles, medical devices and so much more.
 
 Much of the heartache in configuring a project is also removed by using an Arduino style configuration file that enables/disables certain features and configurations.
 
-The graphics library is also much faster acheived by removing floating point operations that are considerebly slower when number crunching graphics.
+
+
+
  
