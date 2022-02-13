@@ -192,7 +192,9 @@ It enables the use of low-cost components that are typically available from Pimo
 
 # Coming Soon!
 
-Pico Arcade is currently under development and will include a number of exciting software and hardware projects using various sensors. In the pipeline, I have also developed a compact, 'connector free' means of prototyping super-slim devices that are easy to wire together and solder using a unique circuit board printed by a 3D printer and no special filaments.
+Pico Arcade is currently under development and will include a number of exciting software and hardware projects using various sensors. 
+
+In the pipeline, I will also introduce a compact, 'connector free' means of prototyping super-slim devices.  They will be easy to wire together and solder using a unique printed circuit board produced on a 3D printer and no special filaments.
 
 **Watch this space!**
 
