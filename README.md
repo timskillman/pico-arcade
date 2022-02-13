@@ -178,7 +178,7 @@ The graphics library has the following improvements;
 - Faster triangle rendering
 - Quadratic curves
 - Gradient-filled rectangles (multiple colours can be added and evenly spread through the fill)
-- General flood fill (can me quite expensive on memory!)
+- General flood fill (can be quite expensive on memory!)
 - Textured triangle (not tested!)
 
 
@@ -192,7 +192,7 @@ It enables the use of low-cost components that are typically available from Pimo
 
 # Coming Soon!
 
-I have also developed a compact, 'connector free' means of prototyping super-slim devices that are easy to wire together and solder using a unique circuit board printed by a 3D printer and no special filaments.
+Pico Arcade is currently under development and will include a number of exciting software and hardware projects using various sensors. In the pipeline, I have also developed a compact, 'connector free' means of prototyping super-slim devices that are easy to wire together and solder using a unique circuit board printed by a 3D printer and no special filaments.
 
 **Watch this space!**
 
