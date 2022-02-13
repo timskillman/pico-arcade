@@ -75,6 +75,66 @@ make
 The 'picoarcade.uf2' file can be found in the 'games' folder
 
 
+# How to change screen type and pin configurations
+
+Configuration settings are found in games/CMakeLists.txt
+Here you select between;
+
+**1. Display driver configuration**
+
+```bash
+  DISPLAY_ROTATION=0   #or, 90,180,270
+
+  DISPLAY_DRIVER_ST7735_160_128
+  DISPLAY_DRIVER_ST7735_128_128
+  DISPLAY_DRIVER_ST7735_160_80
+  DISPLAY_DRIVER_ST7789_240_240
+  DISPLAY_DRIVER_ILI9341_320_240
+```
+
+**2. Display pins**
+
+```bash
+  DISPLAY_CS=5   #Chip Select (CS pin)
+  DISPLAY_DC=7   #DC pin
+  DISPLAY_SCK=2  #Clock pin
+  DISPLAY_MOSI=3 #MOSI (or SDA) pin
+  DISPLAY_BL=6   #Back Light pin (or -1 if not used)
+  DISPLAY_RST=4  #Reset pin
+```
+
+**3. Button pins**
+
+```bash
+  BUTTON_A=11
+  BUTTON_B=21
+  BUTTON_X=13
+  BUTTON_Y=12
+
+  BUTTON_L=14
+  BUTTON_R=19
+  BUTTON_U=18
+  BUTTON_D=20
+  BUTTON_F=9
+```
+
+**4. Games to compile**
+Note: Including ALL games will compile but over-run on Pico memory (resulting in blank screen!)
+
+```bash
+  #GAME_ROLLERBALL
+  GAME_BREAKOUT
+  GAME_SCREENSAVERS
+  GAME_UPRISING
+  GAME_ASTEROIDS
+  #GAME_MISSILEBOMBER
+```
+
+**5. Adding your own games/tests**
+
+'main.cpp' (games folder) sets up and controls which games are run
+
+See [Writing you own arcade game](writing_your_own_game.md) for more information.
 
 # Software support for Devices
 
@@ -87,12 +147,12 @@ The following screens are supported:
 Note: It's very simple to add new screens of the type above although they need to support Chip Select (CS) for now.  It's also simple to orientate the screen in any 90 degree direction.
 
 
-Supported devices:
+**Supported devices:**
 
 - GY271 (i2c) - gyro and accelerometer
 - mpu_9250 (SPI) - gyro and accelerometer
 
-Further support coming for
+**Further support coming for**
 
 - DS1302 RTC module (i2c)
 - HC05 Bluetooth LE 4.0 (i2c)
@@ -101,7 +161,7 @@ Further support coming for
 - Heart-rate monitor
 - PAM8302A audio amp
 
-Sensors & mechanical:
+**Sensors & mechanical:**
 
 - Ultrasonic sensors
 - Stepper motor
