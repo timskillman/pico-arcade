@@ -1,6 +1,6 @@
 # Pico Arcade Games & Libraries
 
-![alt text](https://github.com/timskillman/pico-arcade/blob/main/images/pico-arcades.jpg "Pico Arcade games")
+![alt text](https://github.com/timskillman/pico-arcade/blob/main/images/PicoArcadeMini.jpg "Pico Arcade games")
 
 **Pico Arcade** is written for the Raspberry Pi Pico and is a derivative of the excellent [Pimoroni Pico library](https://github.com/pimoroni/pimoroni-pico/).  
 However, many of the drivers and libraries have had a complete overhaul in terms of supporting several new screens and sensors.  
