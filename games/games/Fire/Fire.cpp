@@ -2,7 +2,6 @@
 
 //From https://github.com/andreban/pico-fire
 //Copyright (c) Andreban, Feb 21
-using namespace pimoroni;
 
 void Fire::init(PicoDisplay &pico_display)
 {
@@ -47,15 +46,15 @@ void Fire::init(PicoDisplay &pico_display)
 }
 
 int Fire::posAt(int x, int y) {
-    return y * PicoDisplay::WIDTH + x;
+    return y * w + x;
 }
 
 void Fire::update(PicoDisplay& pico_display) 
 {
-    for (int y = 0; y < PicoDisplay::HEIGHT; y++) {
-        int row = y * PicoDisplay::WIDTH;
-        int next_row = y == 0 ? 0 : (y - 1) * PicoDisplay::WIDTH;
-        for (int x = 0; x < PicoDisplay::WIDTH; x++) {
+    for (int y = 0; y < h; y++) {
+        int row = y * w;
+        int next_row = y == 0 ? 0 : (y - 1) * w;
+        for (int x = 0; x < w; x++) {
             uint8_t color = fire[row + x];
             uint16_t pen = pallete[color];
             *pico_display.ptr(x, y) = pen;
@@ -64,11 +63,11 @@ void Fire::update(PicoDisplay& pico_display)
                 int new_x = x;
                 int rand = fast_rand() % 3;
                 new_x = (new_x + rand - 1 + wind);
-                if (new_x >= PicoDisplay::WIDTH) {
-                    new_x = new_x - PicoDisplay::WIDTH;
+                if (new_x >= w) {
+                    new_x = new_x - w;
                 }
                 else if (new_x < 0) {
-                    new_x = new_x + PicoDisplay::WIDTH;
+                    new_x = new_x + w;
                 }
                 color = color > 0 ? color - (rand & 1) : 0;
                 fire[next_row + new_x] = color;
@@ -88,8 +87,8 @@ void Fire::update(PicoDisplay& pico_display)
 
     if (!a_pressed && pico_display.is_pressed(PicoDisplay::A)) {
         uint8_t color_index = enabled ? 0 : 35;
-        for (int i = 0; i < PicoDisplay::WIDTH; i++) {
-            uint32_t pos = posAt(i, PicoDisplay::HEIGHT - 1);
+        for (int i = 0; i < w; i++) {
+            uint32_t pos = posAt(i, h - 1);
             fire[pos] = color_index;
         }
         enabled = !enabled;

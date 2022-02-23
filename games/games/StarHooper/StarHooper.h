@@ -1,6 +1,6 @@
 /*
 
-MIT No Attribution
+MIT License
 
 Copyright (c) 2020-2021 Tim Skillman
 
@@ -22,16 +22,25 @@ SOFTWARE.
 */
 
 #include "pico_display.hpp"
+#include "pico/stdlib.h"
 #include "hardware/adc.h"
+#include "../../drivers/gy521/gy521.h"
 
 using namespace pimoroni;
 
-class VirtKeyboard {
+class StarHooper {
 public:
 
-  VirtKeyboard() {}
+  const static uint8_t MAX_STARS = 128;
+  const static uint8_t MAX_ASTEROIDS = 20;
+  const static int32_t w = PicoDisplay::WIDTH;
+  const static int32_t h = PicoDisplay::HEIGHT;
+  const static int32_t hw = w / 2;
+  const static int32_t hh = h / 2;
   
-  VirtKeyboard(PicoDisplay &pico_display) {
+  StarHooper() {}
+  
+  StarHooper(PicoDisplay &pico_display) {
     init(pico_display);
   }
   
@@ -39,13 +48,39 @@ public:
   void update(PicoDisplay &pico_display);
 
 private:
-  int hw = PicoDisplay::WIDTH / 2;
-  int hh = PicoDisplay::HEIGHT / 2;
-  int tx = 0, ty = 0;
-  Pen green;
-  string[4] kbd = { "A B C D E F G H I J", 
-                    "K L M N O P Q R S T", 
-                    "U V W X Y Z _ @ . /", 
-                    "0 1 2 3 4 5 6 7 8 9" };
+
+  GY521 mpu;
   
+  int32_t rs = 8;
+  int32_t sw = w<<rs, sh = h<<rs;
+  int32_t cx = hw<<rs;
+  int32_t cy = hh<<rs;
+  int32_t asteroid = 10;
+  
+  struct star
+  {
+    
+    star() {}
+  
+    star(int32_t _x, int32_t _y, int32_t _z, int32_t _zspeed, uint32_t _size, Point offset) {
+      x=_x; y=_y; z=_z; zspeed = _zspeed; size = _size;
+      oldpos = calcPoint(offset);
+    }
+    
+    Point calcPoint(Point offset) {
+      return Point(((offset.x + x)*w) / z + hw, ((offset.y + y)*w) / z + hh);
+    }
+    
+    int32_t x;
+    int32_t y;
+    int32_t z;
+    int32_t zspeed;
+    uint32_t size;
+    Point oldpos;
+  };
+
+  star stars[MAX_STARS];
+  star asteroids[MAX_ASTEROIDS];
+  std::vector<Colour> skycols;
 };
+

@@ -164,7 +164,7 @@ namespace pimoroni {
     
   }
   
-  void PicoGraphics::circle(const Point &p, int32_t radius) {
+  void PicoGraphics::circle(const Point &p, int32_t radius, uint32_t crescent) {
     // circle in screen bounds?
     Rect bounds = Rect(p.x - radius, p.y - radius, radius * 2, radius * 2);
     if(!bounds.intersects(clip)) return;
@@ -176,15 +176,15 @@ namespace pimoroni {
 
       err += oy; oy++; err += oy;
 
-      pixel_span(Point(p.x - ox, p.y + last_oy), ox * 2 + 1);
+      pixel_span(Point(p.x - ox, p.y + last_oy), ((ox * crescent)>>16) + 1);
       if (last_oy != 0) {
-        pixel_span(Point(p.x - ox, p.y - last_oy), ox * 2 + 1);
+        pixel_span(Point(p.x - ox, p.y - last_oy), ((ox * crescent)>>16) + 1);
       }
 
       if(err >= 0 && ox != last_oy) {
-        pixel_span(Point(p.x - last_oy, p.y + ox), last_oy * 2 + 1);
+        pixel_span(Point(p.x - last_oy, p.y + ox), ((last_oy * crescent)>>16) + 1);
         if (ox != 0) {
-          pixel_span(Point(p.x - last_oy, p.y - ox), last_oy * 2 + 1);
+          pixel_span(Point(p.x - last_oy, p.y - ox), ((last_oy * crescent)>>16) + 1);
         }
 
         err -= ox; ox--; err -= ox;
@@ -308,8 +308,21 @@ namespace pimoroni {
       xf+=longEdge;
       xt+=(y < p1.y) ? topEdge : botEdge;
     }
-    
-    
+  }
+
+  void PicoGraphics::trilist(const std::vector<int8_t>& tripoints, Point pos, float scale)
+  {
+    int32_t scl = (int32_t)(scale*65536.f);
+    for (size_t i=0; i<tripoints.size(); i+=6) {
+      Point p1 = pos + Point((tripoints[i]*scl)>>16,(tripoints[i+1]*scl)>>16);
+      Point p2 = pos + Point((tripoints[i+2]*scl)>>16,(tripoints[i+3]*scl)>>16);
+      Point p3 = pos + Point((tripoints[i+4]*scl)>>16,(tripoints[i+5]*scl)>>16);
+      
+      //Point p1 = pos + Point(((tripoints[i]<<16)*scl)>>16,((tripoints[i+1]<<16)*scl)>>16);
+      //Point p2 = pos + Point(((tripoints[i+2]<<16)*scl)>>16,((tripoints[i+3]<<16)*scl)>>16);
+      //Point p3 = pos + Point(((tripoints[i+4]<<16)*scl)>>16,((tripoints[i+5]<<16)*scl)>>16);
+      triangle(p1,p2,p3);
+    }
   }
 
   void PicoGraphics::polygon(const std::vector<Point> &points) {

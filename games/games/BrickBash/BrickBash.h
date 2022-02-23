@@ -23,6 +23,11 @@ public:
 
 private:
   
+  void draw_game(PicoDisplay &pico_display);
+  void game_status(PicoDisplay &pico_display);
+  void collisions(PicoDisplay &pico_display);
+  void controllers(PicoDisplay &pico_display);
+  
   struct pt {
     int32_t      x;
     int32_t      y;
@@ -42,6 +47,7 @@ private:
   uint32_t lives = 3;
   uint32_t level = 0;
   int32_t speed = 3;
+  int8_t fontsize = 2;
   
   bool start = true;
   int maxlevels = 5;

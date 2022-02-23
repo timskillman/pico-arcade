@@ -50,7 +50,7 @@ int32_t BouncingBalls::distanceSquared(Point &a, Point &b) {
 
 void BouncingBalls::init(PicoDisplay &pico_display)
 {
-	fast_srand(45343);
+	fast_rand_seed(45343);
 	balls.resize(MAX_BALLS);
 	
 	balls[0].set(pico_display, 20,Point(hw,hh),Point(0,0),0x0000ff);

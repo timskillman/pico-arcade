@@ -188,7 +188,32 @@ void BrickBash::init(PicoDisplay &pico_display)
 
 void BrickBash::update(PicoDisplay &pico_display)
 {
-  	//pico_display.set_pen(0, 0, 0);
+
+    draw_game(pico_display);
+    
+    game_status(pico_display);
+
+    collisions(pico_display);
+    
+    controllers(pico_display);
+    
+    //Display score
+    pico_display.set_pen(255, 255, 255);
+    pico_display.text("SCORE:"+std::to_string(score),Point(hw-50,h-15),0,fontsize);
+    pico_display.set_pen(0, 255, 0);
+    pico_display.text("HIGHSCORE:"+std::to_string(highscore),Point(0,0),0,fontsize);
+     
+    //pico_display.text("ACD0:"+std::to_string(adc),Point(hw-80,h-50),0,2);
+    //adc_select_input(1);
+    //adc = adc_read();
+    //pico_display.text("ACD1:"+std::to_string(adc),Point(hw-80,h-30),0,2);
+      
+}
+
+void BrickBash::draw_game(PicoDisplay &pico_display)
+{
+  
+    	//pico_display.set_pen(0, 0, 0);
 	  //pico_display.clear();
   
     pico_display.gradientRect(Rect(0,0,w,h),skycols);
@@ -215,21 +240,24 @@ void BrickBash::update(PicoDisplay &pico_display)
         }
       }
     }
-    
+}
+
+void BrickBash::game_status(PicoDisplay &pico_display)
+{
     //Check game status
     if (lives==0) {
         pico_display.set_pen(255, 255, 255);
-        pico_display.text("GAME OVER!",Point(hw-65,hh-30),500,3);
+        pico_display.text("GAME OVER!",Point(hw-65,hh-30),500,fontsize+1);
         if (highscore < score) {
-          pico_display.text("YOU GOT THE",Point(hw-50,hh),500,2);
-          pico_display.text("HIGH SCORE!",Point(hw-50,hh+30),500,2);
-          pico_display.text("WELL DONE!!",Point(hw-50,hh+60),500,2);
+          pico_display.text("YOU GOT THE",Point(hw-50,hh),500,fontsize);
+          pico_display.text("HIGH SCORE!",Point(hw-50,hh+30),500,fontsize);
+          pico_display.text("WELL DONE!!",Point(hw-50,hh+60),500,fontsize);
         } 
         else
         {
-          pico_display.text("YOU STILL NEED TO",Point(hw-75,hh),500,2);
-          pico_display.text("BEAT THE HIGH SCORE",Point(hw-85,hh+30),500,2);
-          pico_display.text("OF "+std::to_string(highscore),Point(hw-40,hh+60),500,2);
+          pico_display.text("YOU STILL NEED TO",Point(hw-75,hh),500,fontsize);
+          pico_display.text("BEAT THE HIGH SCORE",Point(hw-85,hh+30),500,fontsize);
+          pico_display.text("OF "+std::to_string(highscore),Point(hw-40,hh+60),500,fontsize);
         }
         
         if (pico_display.is_pressed(pico_display.X)) {
@@ -243,8 +271,8 @@ void BrickBash::update(PicoDisplay &pico_display)
         if (start) {
             if (lives==3 && level==0) {
               pico_display.set_pen(255,255,255);
-              pico_display.text("BREAKOUT!",Point(hw-60,hh-25),500,3);
-              pico_display.text("Press A to START",Point(hw-70,hh),500,2);
+              pico_display.text("BREAKOUT!",Point(hw-60,hh-25),500,fontsize+1);
+              pico_display.text("Press A to START",Point(hw-70,hh),500,fontsize);
               if (pico_display.is_pressed(pico_display.X)) {
                 while (!pico_display.is_pressed(pico_display.X));
                 start = false;
@@ -270,7 +298,10 @@ void BrickBash::update(PicoDisplay &pico_display)
             pico_display.circle(Point(w-i*10-5, h-10), ball.r);
         }
     }
-    
+}
+
+void BrickBash::collisions(PicoDisplay &pico_display)
+{
     //Ball hit walls?
     int32_t bx = ball.x >> 16;
     int32_t by = ball.y >> 16;
@@ -314,8 +345,11 @@ void BrickBash::update(PicoDisplay &pico_display)
       lives++;
       start = true;
     }
-    
-    //Check controllers
+}
+
+void BrickBash::controllers(PicoDisplay &pico_display)
+{
+      //Check controllers
     /*
     adc_select_input(1);
     float adc = (float)adc_read() / 4096.f - 0.5f;
@@ -333,16 +367,4 @@ void BrickBash::update(PicoDisplay &pico_display)
     if(pico_display.is_pressed(pico_display.R) && bat.x>0) {
       bat.x -= speed;
     }
-    
-    //Display score
-    pico_display.set_pen(255, 255, 255);
-    pico_display.text("SCORE:"+std::to_string(score),Point(hw-50,h-15),0,2);
-    pico_display.set_pen(0, 255, 0);
-    pico_display.text("HIGHSCORE:"+std::to_string(highscore),Point(0,0),0,2);
-     
-    //pico_display.text("ACD0:"+std::to_string(adc),Point(hw-80,h-50),0,2);
-    //adc_select_input(1);
-    //adc = adc_read();
-    //pico_display.text("ACD1:"+std::to_string(adc),Point(hw-80,h-30),0,2);
-      
 }

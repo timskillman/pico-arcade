@@ -78,6 +78,7 @@ class GY521 {
 	float read_temperature();
 	void read_acceleration(int16_t acceleration[3]);
 	void read_gyro(int16_t gyro[3]);
+	void read_acc_gyro_smooth(int32_t acceleration[3], int32_t gyro[3], uint8_t samples);
 	void calculate_angles_from_accel(int16_t eulerAngles[2], int16_t accel[3]);
 	void calculate_angles(int16_t eulerAngles[2], int16_t accel[3], int16_t gyro[3], uint64_t usSinceLastReading);
 		

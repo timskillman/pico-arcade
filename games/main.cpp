@@ -32,6 +32,10 @@
 #include "games/Asteroids/Asteroids.h"
 #endif
 
+#ifdef GAME_STARHOOPER
+#include "games/StarHooper/StarHooper.h"
+#endif
+
 //#include "games/Pool/Pool.h"
 
 using namespace pimoroni;
@@ -40,8 +44,6 @@ uint16_t buffer[PicoDisplay::WIDTH * PicoDisplay::HEIGHT];
 PicoDisplay pico_display(buffer);
 
 uint16_t max_games = 0;
-//enum { GAME_ROLLERBALL, GAME_BRICKBASH, GAME_UPRISING, GAME_ROTOZOOM, GAME_ASTEROIDS };//, GAME_MISSILE }; // GAME_FIRE = 1,GAME_PICOBIRD = 5, GAME_POOL
-
 
 int main(int argc, char* argv[]) {
 
@@ -88,6 +90,11 @@ int main(int argc, char* argv[]) {
   Games.push_back("MISSILEBOMBER");
 #endif
 
+#ifdef GAME_STARHOOPER
+  StarHooper starhooper(pico_display);
+  Games.push_back("STARHOOPER");
+#endif
+
   //Pool pool(pico_display);
 
   uint32_t max_games=Games.size();
@@ -108,39 +115,37 @@ int main(int argc, char* argv[]) {
     //switch (game) {
 #ifdef GAME_BREAKOUT
     if (Games[game]=="BREAKOUT") brickbash.update(pico_display);
-    //case Game_BrickBash:      brickbash.update(pico_display); break;
 #endif
     //case GAME_FIRE:       fire.update(pico_display);      break;
     //case GAME_PICOBIRD:   picobird.update(pico_display);  break;
 #ifdef GAME_UPRISING
     if (Games[game]=="UPRISING") vectormap.update(pico_display);
-    //case Game_Uprising:       vectormap.update(pico_display); break;
 #endif
 
 #ifdef GAME_SCREENSAVERS
     if (Games[game]=="SCREENSAVERS") screensaver.update(pico_display);
-    //case Game_ScreenSavers:   screensaver.update(pico_display);  break;
 #endif
 
 #ifdef GAME_ASTEROIDS
     if (Games[game]=="ASTEROIDS") asteroids.update(pico_display);
-    //case Game_Asteroids:      asteroids.update(pico_display); break;
 #endif
 
 #ifdef GAME_MISSILEBOMBER
     if (Games[game]=="MISSILEBOMBER") missile.update(pico_display);
-    //case Game_MissileBomber:  missile.update(pico_display);   break;
 #endif
 
 #ifdef GAME_ROLLERBALL
     if (Games[game]=="ROLLERBALL") rollerball.update(pico_display);
-    //case Game_RollerBall:     rollerball.update(pico_display); break;
+#endif
+
+#ifdef GAME_STARHOOPER
+    if (Games[game]=="STARHOOPER") starhooper.update(pico_display);
 #endif
 
     //case GAME_POOL:       pool.update(pico_display);   break;
 
     
-    pico_display.showBattery();
+    //pico_display.showBattery();
     
     //pico_display.update(pi3c);
     pico_display.update();

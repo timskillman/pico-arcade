@@ -1,6 +1,6 @@
 #pragma once
 
-//From https://github.com/andreban/pico-fire
+//Code based on https://github.com/andreban/pico-fire
 //Copyright (c) Andreban, Feb 21
 
 #include <string.h>
@@ -12,9 +12,6 @@
 #include "../../Common/Common.h"
 
 using namespace pimoroni;
-
-    static uint8_t fire[PicoDisplay::WIDTH * PicoDisplay::HEIGHT];
-    static uint16_t pallete[36];
     
 class Fire {
 public:
@@ -28,25 +25,15 @@ public:
     void init(PicoDisplay& pico_display);
     void update(PicoDisplay& pico_display);
 
-
 private:
+
+    const uint32_t w = PicoDisplay::WIDTH;
+    const uint32_t h = PicoDisplay::HEIGHT;
     
-    //unsigned int g_seed = 123435;
-
-    //// Used to seed the generator.           
-    //inline void fast_srand(int seed) {
-    //    g_seed = seed;
-    //}
-
-    //// Compute a pseudorandom integer.
-    //// Output value in range [0, 32767]
-    //inline int fast_rand() {
-    //    g_seed = (214013 * g_seed + 2531011);
-    //    return (g_seed >> 16) & 0x7FFF;
-    //}
-
+    uint8_t fire[PicoDisplay::WIDTH * PicoDisplay::HEIGHT];
+    uint16_t pallete[36];
+    
     int posAt(int x, int y);
-
 
     int8_t wind = 0;
 

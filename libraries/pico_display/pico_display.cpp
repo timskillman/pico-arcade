@@ -40,11 +40,14 @@ namespace pimoroni {
     gpio_set_function(F, GPIO_FUNC_SIO); gpio_set_dir(F, GPIO_IN); gpio_pull_up(F);
     
     //Detect battery level (Pimoroni Lipo Pico)
-    adc_init();
-    adc_gpio_init(BATT_PIN);
-    adc_gpio_init(26);
-    adc_gpio_init(27);
-    
+    //adc_init();
+    //adc_gpio_init(BATT_PIN);
+
+#ifdef ANALOG_JOYSTICK
+    //adc_gpio_init(26);
+    //adc_gpio_init(27);
+#endif
+
     // initialise the screen
     screen.setup(WIDTH, HEIGHT, __fb, spi, CS, DC, SCK, MOSI, RST, BL, INVERT==1, RGB==1); 
     screen.setOffsets(ROTATION, OFFSET_X, OFFSET_Y);

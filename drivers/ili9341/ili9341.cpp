@@ -77,8 +77,8 @@ void ili9341::init()
     uint8_t madctl = (rgb) ? MADCTL::RGB : 0;
     switch (rotation) {
       case 0: madctl = madctl | MADCTL::SWAP_XY; break;
-      case 90: madctl = madctl | MADCTL::ROW_ORDER | MADCTL::COL_ORDER | MADCTL::SWAP_XY; break;
-      case 180: madctl = madctl | MADCTL::COL_ORDER; break;
+      case 90: madctl = madctl | MADCTL::COL_ORDER ; break;
+      case 180: madctl = madctl | MADCTL::ROW_ORDER | MADCTL::COL_ORDER | MADCTL::SWAP_XY; break;
       case 270: madctl = madctl | MADCTL::ROW_ORDER; break;
     }
     command(reg::MADCTRL, 1, (char *)&madctl);

@@ -37,7 +37,7 @@ void GY521::init(i2c_inst_t* i2cport, uint8_t sda, uint8_t scl)
     stdio_init_all();
 
     //Initialize I2C port at 400 kHz
-    i2c = i2c1; //Remember to note which SPI port number you r SDA/SDL pins are on! (Either i2c0 or i2c1)
+    i2c = i2cport; //Remember to note which SPI port number you r SDA/SDL pins are on! (Either i2c0 or i2c1)
     sda_pin = sda;
     scl_pin = scl;
     uint baudrate = i2c_init(i2c, 400 * 1000);
@@ -94,11 +94,37 @@ void GY521::read_acceleration(int16_t acceleration[3])
 void GY521::read_gyro(int16_t gyro[3])
 {
     uint8_t data[6];
-	reg_read(i2c, GY521_ADDR, REG_GYRO_XOUT, data, 6);
-	
-	gyro[0] = ((data[0]<<8) | data[1]);// / acc_scaler;
-	gyro[1] = ((data[2]<<8) | data[3]);// / acc_scaler;
-	gyro[2] = ((data[4]<<8) | data[5]);// / acc_scaler;
+    reg_read(i2c, GY521_ADDR, REG_GYRO_XOUT, data, 6);
+    
+    gyro[0] = ((data[0]<<8) | data[1]);
+    gyro[1] = ((data[2]<<8) | data[3]);
+    gyro[2] = ((data[4]<<8) | data[5]);
+}
+
+void GY521::read_acc_gyro_smooth(int32_t acceleration[3], int32_t gyro[3], uint8_t samples)
+{
+    //smooth out readings by averaging samples ...
+    
+    for (int32_t i=0; i<3; i++) {
+	    acceleration[i]=0;
+	    gyro[i]=0;
+    }
+    
+    for (int16_t s=0; s<samples; s++) {
+	int16_t acc[3];
+	read_acceleration(acc);
+	int16_t gyr[3];
+	read_gyro(gyr);
+	for (int32_t i=0; i<3; i++) {
+	    acceleration[i]+=acc[i];
+	    gyro[i]+=gyr[i];
+	}
+    }
+    
+    for (int32_t i=0; i<3; i++) {   
+	acceleration[i]=acceleration[i]/samples;
+	gyro[i]=gyro[i]/samples;
+    }
 }
 
 void GY521::calculate_angles(int16_t eulerAngles[2], int16_t accel[3], int16_t gyro[3], uint64_t usSinceLastReading) //Calculates angles based on the accelerometer and gyroscope. Requires usSinceLastReading to use the gyro.

@@ -4,7 +4,7 @@
 static unsigned int g_seed = 123435;
 
 // Used to seed the generator.           
-inline void fast_srand(int seed) {
+inline void fast_rand_seed(int seed) {
     g_seed = seed;
 }
 
