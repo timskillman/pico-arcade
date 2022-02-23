@@ -18,7 +18,7 @@ Lasty, several games are included to kickstart your game writing experience;
 - Screensavers (Numerous optimised screensavers)
 - Missile Bomber
 - Asteroids
-- Roller ball (Using a GY271 sensor)
+- StarHooper (Using a GY271 sensor)
 
 All the ibraries and games are written in C++ as Python is typically too slow.
 
@@ -81,7 +81,9 @@ The 'picoarcade.uf2' file can be found in the 'games' folder
 
 # How to change screen type and pin configurations
 
-Configuration settings are found in '[games/CMakeLists.txt](games/CMakeLists.txt)':
+Configuration settings are found in the games folder '[games/PicoArcadeMiniConfig.txt](games/PicoArcadeMiniConfig.txt)':
+*(A new configuration file can be made for your own project - just copy this one and change the file reference
+in the CMakeLists.txt file in the games folder)*
 
 **1. Display driver configuration**
 
@@ -125,10 +127,10 @@ Configuration settings are found in '[games/CMakeLists.txt](games/CMakeLists.txt
 Note: Including ALL games will compile but over-run on Pico memory (resulting in blank screen!)
 
 ```bash
-  #GAME_ROLLERBALL     # A rolling ball test routine for the GY521 accelerometer 
   GAME_BREAKOUT        # Classic breakout
   GAME_SCREENSAVERS    # Numerous screen savers that have been optimised for speed
-  GAME_UPRISING        # A demo 2.5D game
+  #GAME_UPRISING        # A demo 2.5D game
+  GAME_STARHOOPER      # Test Space game using the GY521 accelerometer 
   GAME_ASTEROIDS       # Classic arcade Asteroids
   #GAME_MISSILEBOMBER  # Classic arcade Missile Command
 ```
@@ -148,7 +150,8 @@ The following screens are supported:
 - ST7739 (various resolutions)
 - ili9341
 
-Note: It's very simple to add new screens of the type above although they need to support Chip Select (CS) for now.  It's also simple to orientate the screen in any 90 degree direction.
+Note: It's very simple to add new screens of the type above although they need to support Chip Select (CS) for now.  
+It's also simple to orientate the screen in any 90 degree direction.
 
 
 **Supported devices:**
@@ -193,22 +196,14 @@ Much of the heartache in configuring a project is also removed by using an Ardui
 
 It enables the use of low-cost components that are typically available from Pimoroni, eBay, Alibaba and the likes.
 
-# Coming Soon!
 
-Pico Arcade is currently under development although there are several developments soon to appear in this repo:
+# You can make the Pico Arcade Mini featured above
 
-1. A number of exciting software and hardware projects using various sensors. 
+The Pico Arcade Mini uses a unique 3D printed circuit board.  
+Get all the instructions and downloads from:
 
-2. A cross-platform Pico emulator for faster development
+https://www.instructables.com/Pico-Arcade-Mini/
 
-3. Introduce a compact, 'connector free' means of prototyping super-slim devices; easy to wire together and solder using a unique printed circuit board produced on a 3D printer and no special filaments ...
-
-![alt text](https://github.com/timskillman/pico-arcade/blob/main/images/pico-arcade-game2.jpg "Pico Arcade game with 3D printed circuit board")
-
-![alt text](https://github.com/timskillman/pico-arcade/blob/main/images/pico-arcade-game3.jpg "Slim Pico Arcade game in case")
-
-
-**Watch this space!**
 
 
 
