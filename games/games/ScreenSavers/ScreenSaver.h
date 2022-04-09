@@ -8,6 +8,7 @@
 #include "BouncingBalls.h"
 #include "Strings.h"
 #include "Triangles.h"
+#include "GfxTest.h"
 #include "../../Common/Common.h"
 
 using namespace pimoroni;
@@ -33,9 +34,10 @@ private:
   BouncingBalls bouncingballs;
   Strings strings;
   Triangles triangles;
+  GfxTest gfx;
   
   int currentScreen = 0;
-  int maxScreens = 7;
+  int maxScreens = 8;
   int nextScreenTime;
 };
 

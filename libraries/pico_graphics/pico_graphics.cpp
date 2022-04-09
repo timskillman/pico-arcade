@@ -2,10 +2,21 @@
 
 namespace pimoroni {
   PicoGraphics::PicoGraphics(uint16_t width, uint16_t height, uint16_t *frame_buffer)
-  : frame_buffer(frame_buffer), bounds(0, 0, width, height), clip(0, 0, width, height) {
+  : frame_buffer(frame_buffer), bounds(0, 0, width, height), clip(0, 0, width, height) 
+  {
+    //initRots();
+    
     set_font(&font8);
   };
 
+  void PicoGraphics::initRots()
+  {
+    //for (uint16_t i = 0; i < 360; i++) {
+    //  sinlut[i] = sin(i * DEGRAD)*65536.f;
+    //  coslut[i] = cos(i * DEGRAD)*65536.f;
+    //}
+  }
+  
   void PicoGraphics::set_font(const Font *font){
     this->font = font;
   }
@@ -139,27 +150,42 @@ namespace pimoroni {
     }
   }
 
-  void PicoGraphics::gradientRect(const Rect &rect, std::vector<Colour> cols)
+  void PicoGraphics::gradientRect(const Rect &rect, std::vector<Colour>& cols, bool vert)
   {
     if (cols.size()<2) return;
     
-    float d = rect.h / (cols.size()-1);
-    float ry = rect.y;
+    float d = ((vert) ? rect.w : rect.h) / (cols.size()-1);
+    float r = (vert) ? rect.x : rect.y;
     
     for (size_t c=0; c < cols.size()-1; c++) {
-      Colour &col1 = cols[c], &col2 = cols[c+1];
       
+      Colour &col1 = cols[c], &col2 = cols[c+1];
       float r1 = col1.red, g1 = col1.green, b1 = col1.blue;
       float r2 = col2.red, g2 = col2.green, b2 = col2.blue;
       float rd = (r2-r1)/d, gd = (g2-g1)/d, bd = (b2-b1)/d;
       
-      for (int32_t y = ry; y < ry + d; y++) {
-        set_pen(r1,g1,b1); 
-        Pen *dest = ptr(rect.x,y);
-        for(int32_t i = 0; i < rect.w; i++) *dest++ = pen;
-        r1+=rd; g1+=gd; b1+=bd;
+      if (vert) {
+        for (int32_t x = r; x < r + d; x++) {
+          set_pen(r1,g1,b1); 
+          Pen *dest = ptr(x,rect.y);
+          for(int32_t i = 0; i < rect.h; i++) {
+            *dest = pen;
+            dest += bounds.w;
+          }
+          r1+=rd; g1+=gd; b1+=bd;
+        }
+        r+=d;
       }
-      ry+=d;
+      else
+      {
+        for (int32_t y = r; y < r + d; y++) {
+          set_pen(r1,g1,b1); 
+          Pen *dest = ptr(rect.x,y);
+          for(int32_t i = 0; i < rect.w; i++) *dest++ = pen;
+          r1+=rd; g1+=gd; b1+=bd;
+        }
+        r+=d;
+      }
     }
     
   }
@@ -192,7 +218,69 @@ namespace pimoroni {
     }
   }
 
+  void PicoGraphics::setColourByHeight(uint32_t c, std::vector<Colour>& cols)
+  {
+      Colour &col1 = cols[c>>16], &col2 = cols[(c>>16)+1];
+      int32_t frac = (c>>8) & 255;
+      uint8_t red = (uint8_t)((int32_t)col1.red + ((((int32_t)col2.red - (int32_t)col1.red)*frac)>>8));
+      uint8_t grn = (uint8_t)((int32_t)col1.green + ((((int32_t)col2.green - (int32_t)col1.green)*frac)>>8));
+      uint8_t blu = (uint8_t)((int32_t)col1.blue + ((((int32_t)col2.blue - (int32_t)col1.blue)*frac)>>8));
+      set_pen(red,grn,blu); 
+  }
+  
+  void PicoGraphics::gradientRectRounded(const Rect& bounds, int16_t radius, std::vector<Colour>& cols, uint32_t crescent) 
+  {
+    // circle in screen bounds?
+    
+    //set_pen(255,255,255);
+    //Rect bounds = Rect(p.x, p.y, width + radius * 2, height + radius * 2);
+    if(!bounds.intersects(clip)) return;
 
+    if (radius==0) gradientRect(bounds, cols);
+      
+    int32_t rw = (int32_t)bounds.w-radius*2; if (rw<1) rw=1;
+    int32_t rh = (int32_t)bounds.h-radius*2; if (rh<0) rh=0;
+        
+    int ox = radius, oy = 0, err = -radius;
+    uint32_t d = ((rh+radius)==0) ? 0 : (uint32_t)(((float)(cols.size()-1) / (float)(rh + radius*2))*65536.f);
+    
+    int px = bounds.x+radius, py = bounds.y+radius;
+    
+    while (ox >= oy)
+    {
+      int last_oy = oy;
+
+      err += oy; oy++; err += oy;
+      
+      setColourByHeight(((py + last_oy + rh)-bounds.y)*d,cols);
+      pixel_span(Point(px - ox, py + last_oy + rh), ((ox * crescent)>>16) + rw);
+      if (last_oy != 0) {
+        setColourByHeight(((py - last_oy)-bounds.y)*d,cols);
+        pixel_span(Point(px - ox, py - last_oy), ((ox * crescent)>>16) + rw);
+      }
+
+      if(err >= 0 && ox != last_oy) {
+        setColourByHeight(((py + ox + rh)-bounds.y)*d,cols);
+        pixel_span(Point(px - last_oy, py + ox + rh), ((last_oy * crescent)>>16) + rw);
+        if (ox != 0) {
+          setColourByHeight(((py - ox)-bounds.y)*d,cols);
+          pixel_span(Point(px - last_oy, py - ox), ((last_oy * crescent)>>16) + rw);
+        }
+
+        err -= ox; ox--; err -= ox;
+      }
+    }
+    
+    for (int16_t y=0; y<rh; y++) {
+      setColourByHeight((y+radius)*d,cols);
+      pixel_span(Point(bounds.x, bounds.y + radius + y), bounds.w);
+    }
+  }
+  
+  void PicoGraphics::gradientCircle(const Point& pos, int16_t radius, std::vector<Colour>& cols, uint32_t crescent)
+  {
+      gradientRectRounded(Rect(pos.x-radius,pos.y-radius, radius*2,radius*2), radius, cols, crescent);
+  }
   
   void PicoGraphics::character(const char c, const Point &p, uint8_t scale) {
     uint8_t char_index = c - 32;
@@ -310,17 +398,112 @@ namespace pimoroni {
     }
   }
 
-  void PicoGraphics::trilist(const std::vector<int8_t>& tripoints, Point pos, float scale)
-  {
-    int32_t scl = (int32_t)(scale*65536.f);
-    for (size_t i=0; i<tripoints.size(); i+=6) {
-      Point p1 = pos + Point((tripoints[i]*scl)>>16,(tripoints[i+1]*scl)>>16);
-      Point p2 = pos + Point((tripoints[i+2]*scl)>>16,(tripoints[i+3]*scl)>>16);
-      Point p3 = pos + Point((tripoints[i+4]*scl)>>16,(tripoints[i+5]*scl)>>16);
+void PicoGraphics::triangleCol(Point p0, Point p1, Point p2, uint32_t c0, uint32_t c1, uint32_t c2) {
+    
+    //sort points by y 
+    if (p1.y > p2.y) {
+      Point sp = p1; p1=p2; p2=sp;
+      uint32_t tc=c1; c1=c2; c2=tc;
+    }
+    if (p0.y > p1.y) {
+      Point sp = p0; p0=p1; p1=sp;
+      uint32_t tc=c0; c0=c1; c1=tc;
+    }
+    if (p1.y > p2.y) {
+      Point sp = p1; p1=p2; p2=sp;
+      uint32_t tc=c1; c1=c2; c2=tc;
+    }
+    
+    //Check if triangle is completely above or below the screen
+    if (p2.y<0 || p0.y>bounds.h || p0.y==p2.y) return;
+    
+    //Split colours into component RGB parts (16fp)
+    int32_t r0 = (c0<<16) & 0xff0000, g0 = (c0<<8) & 0xff0000, b0 = c0 & 0xff0000;
+    int32_t r1 = (c1<<16) & 0xff0000, g1 = (c1<<8) & 0xff0000, b1 = c1 & 0xff0000;  
+    int32_t r2 = (c2<<16) & 0xff0000, g2 = (c2<<8) & 0xff0000, b2 = c2 & 0xff0000;  
+    
+    //calc increments (16 fixed point)
+    int32_t ty=p2.y - p0.y;
+    int32_t longEdge = ((p2.x - p0.x)<<16) / ty;
+    int32_t ler = (r2 - r0) / ty;
+    int32_t leg = (g2 - g0) / ty;
+    int32_t leb = (b2 - b0) / ty;
+    
+    ty = (p1.y == p0.y) ? 1 : p1.y - p0.y;
+    int32_t topEdge = ((p1.x - p0.x)<<16) / ty;
+    int32_t ter = (r1 - r0) / ty;
+    int32_t teg = (g1 - g0) / ty;
+    int32_t teb = (b1 - b0) / ty;
+    
+    ty = (p2.y == p1.y) ? 1 : p2.y - p1.y;
+    int32_t botEdge = ((p2.x - p1.x)<<16) / ty;
+    int32_t ber = (r2 - r1) / ty;
+    int32_t beg = (g2 - g1) / ty;
+    int32_t beb = (b2 - b1) / ty;
+    
+    int32_t xf = p0.x << 16, xt = xf;
+    int32_t rf = r0, rt = rf;
+    int32_t gf = g0, gt = gf;
+    int32_t bf = b0, bt = bf;
+    
+    if (p1.y==p0.y) { xt+=topEdge; rf+=ter; gf+=teg; bf+=teb; }
+    
+    //Clip top of triangle if above drawing area
+    int32_t ys = p0.y;
+    if (ys<0) {
+      xf+=longEdge*-p0.y;
+      rf+=ler*-p0.y; gf+=leg*-p0.y; bf+=leb*-p0.y;
+      xt+=(p1.y<0) ? topEdge*(p1.y-p0.y)+botEdge*-p1.y : topEdge*-p0.y;
+      rt+=(p1.y<0) ? ter*(p1.y-p0.y)+ber*-p1.y : ter*-p0.y;
+      gt+=(p1.y<0) ? teg*(p1.y-p0.y)+beg*-p1.y : teg*-p0.y;
+      bt+=(p1.y<0) ? teb*(p1.y-p0.y)+beb*-p1.y : teb*-p0.y;
+      ys=0;
+    }
+    
+    for (int32_t y=ys; y<=((p2.y >= bounds.h) ? bounds.h-1 : p2.y); y++)
+    {
+
+      int32_t span = abs((xt-xf)>>16);
+      int32_t rd = (rt-rf)/span;
+      int32_t gd = (gt-gf)/span;
+      int32_t bd = (bt-bf)/span;
+      int32_t fr=rf, fg=gf, fb=bf;  
+                
+      Pen* dest = ptr(0,y);
+      if (xf<xt) 
+      {
+        if (xf<0) { int32_t cl=-(xf>>16); fr+=rd*cl; fg+=gd*cl; fb+=bd*cl; } //clip colours on left
+        for (int32_t x = ((xf > 0) ? xf>>16 : 0); x <= ((xt>>16 < bounds.w) ? xt>>16 : bounds.w-1); x++) {
+          dest[x] = create_pen(fr>>16,fg>>16,fb>>16);
+          fr+=rd; fg+=gd; fb+=bd;
+        }
+      }
+      else
+      {
+        if (xf>>16 >= bounds.w) { int32_t cl=(xf>>16)-bounds.w; fr+=rd*cl; fg+=gd*cl; fb+=bd*cl; } //clip colours on right
+        for (int32_t x = (xf>>16 < bounds.w ? xf>>16 : bounds.w-1); x >= (xt > 0 ? xt>>16 : 0); x--) {
+          dest[x] = create_pen(fr>>16,fg>>16,fb>>16);
+          fr+=rd; fg+=gd; fb+=bd;
+        }
+      }
+
+      xf+=longEdge;
+      xt+=(y < p1.y) ? topEdge : botEdge;
       
-      //Point p1 = pos + Point(((tripoints[i]<<16)*scl)>>16,((tripoints[i+1]<<16)*scl)>>16);
-      //Point p2 = pos + Point(((tripoints[i+2]<<16)*scl)>>16,((tripoints[i+3]<<16)*scl)>>16);
-      //Point p3 = pos + Point(((tripoints[i+4]<<16)*scl)>>16,((tripoints[i+5]<<16)*scl)>>16);
+      rf+=ler; gf+=leg; bf+=leb;
+      rt+=(y < p1.y) ? ter : ber;
+      gt+=(y < p1.y) ? teg : beg;
+      bt+=(y < p1.y) ? teb : beb;
+    }
+  }
+  
+  void PicoGraphics::trilist(const std::vector<int8_t>& tripoints, Point pos, int32_t scale, int32_t angle)
+  {
+    //int32_t scl = (int32_t)(scale*65536.f);
+    for (size_t i=0; i<tripoints.size(); i+=6) {
+      Point p1 = pos + Point((tripoints[i]*scale)>>16,(tripoints[i+1]*scale)>>16).fast_rotate(angle);
+      Point p2 = pos + Point((tripoints[i+2]*scale)>>16,(tripoints[i+3]*scale)>>16).fast_rotate(angle);
+      Point p3 = pos + Point((tripoints[i+4]*scale)>>16,(tripoints[i+5]*scale)>>16).fast_rotate(angle);
       triangle(p1,p2,p3);
     }
   }

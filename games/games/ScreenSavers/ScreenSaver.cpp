@@ -15,6 +15,7 @@ void ScreenSaver::init(PicoDisplay& pico_display)
 	bouncingballs = BouncingBalls(pico_display);
 	strings = Strings(pico_display);
 	triangles = Triangles(pico_display);
+	gfx = GfxTest(pico_display);
 }
 
 void ScreenSaver::update(PicoDisplay& pico_display)
@@ -26,6 +27,7 @@ void ScreenSaver::update(PicoDisplay& pico_display)
 	case 3: starfield.update(pico_display); break;
 	case 4: metaballs.update(pico_display); break;
 	case 6: strings.update(pico_display); break;
+	case 7: gfx.update(pico_display); break;
 	case 0: triangles.update(pico_display); break;
 	}
 	

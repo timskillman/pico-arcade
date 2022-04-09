@@ -13,6 +13,7 @@ add_executable(
   games/ScreenSavers/BouncingBalls.cpp
   games/ScreenSavers/Strings.cpp
   games/ScreenSavers/Triangles.cpp
+  games/ScreenSavers/GfxTest.cpp
   games/Asteroids/Asteroids.cpp
   games/Asteroids/ship.cpp
   games/Asteroids/asteroid.cpp
@@ -25,7 +26,7 @@ add_executable(
 )
 
 # Pull in pico libraries that we need
-target_link_libraries(picoarcade pico_stdlib hardware_spi hardware_i2c hardware_pwm hardware_dma pico_display pico_mpu_9250 pico_gy521)
+target_link_libraries(picoarcade pico_stdlib hardware_spi hardware_i2c hardware_pwm hardware_dma pico_display pico_widgets pico_mpu_9250 pico_gy521)
 
 # create map/bin/hex file etc.
 pico_add_extra_outputs(picoarcade)

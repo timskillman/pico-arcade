@@ -9,17 +9,17 @@
 //#include <sstream>
 
 
-static int32_t sinlut[360];
-static int32_t coslut[360];
+//static int32_t sinlut[360];
+//static int32_t coslut[360];
 
 
 void Asteroids::init(PicoDisplay &pico_display) {
 
     /* Generate look up tables - 16 fixed point. */
-    for (uint16_t i = 0; i < 360; i++) {
-        sinlut[i] = sin(i * M_PI / 180)*65536;
-        coslut[i] = cos(i * M_PI / 180)*65536;
-    }
+    //for (uint16_t i = 0; i < 360; i++) {
+    //    sinlut[i] = sin(i * M_PI / 180)*65536;
+    //    coslut[i] = cos(i * M_PI / 180)*65536;
+    //}
     
     // Create initial asteroid field
 	astroField.create(levelUp);

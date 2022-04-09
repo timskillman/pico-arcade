@@ -38,22 +38,24 @@ using namespace pimoroni;
 #define SPEED 1
 #define PIXEL_SIZE  2
 
-static int32_t sinlut[360];
-static int32_t coslut[360];
+//static int32_t sinlut[360];
+//static int32_t coslut[360];
 
 void RotoZoom::init(PicoDisplay& pico_display)
 {
     /* Generate look up tables - 16 fixed point. */
-    for (uint16_t i = 0; i < 360; i++) {
-        sinlut[i] = sin(i * M_PI / 180)*65536;
-        coslut[i] = cos(i * M_PI / 180)*65536;
-    }
+    //for (uint16_t i = 0; i < 360; i++) {
+    //    sinlut[i] = sin(i * M_PI / 180)*65536.f;
+    //    coslut[i] = cos(i * M_PI / 180)*65536.f;
+    //}
+    //pico_display.initRots();
 }
 
 void RotoZoom::update(PicoDisplay& pico_display)
 {
-    int32_t s = sinlut[angle];
-    int32_t c = coslut[angle];
+    int32_t s = fastsin(angle), c = fastcos(angle);
+    //int32_t s = pico_display.fastsin(angle);
+    //int32_t c = pico_display.fastcos(angle);
     int32_t z = s * 1.2;
 
     uint16_t w1 = PicoDisplay::WIDTH;
@@ -90,6 +92,10 @@ void RotoZoom::update(PicoDisplay& pico_display)
         }
     }
     
+    pico_display.set_pen(180, 120, 0);
+    pico_display.text(std::to_string(angle), Point(20,20),3);
+    
     angle = (angle + SPEED) % 360;
     
+
 }

@@ -57,7 +57,7 @@
 #include "../../drivers/ili9341/ili9341.hpp"
 #endif
 
-#include "../../libraries/pico_graphics/pico_graphics.hpp"
+#include "../pico_graphics/pico_graphics.hpp"
 #include "hardware/spi.h"
 
 namespace pimoroni {
