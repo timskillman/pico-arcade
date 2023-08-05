@@ -3,7 +3,7 @@ cd ~
 mkdir pico
 cd pico
 echo Installing the Pico SDK...
-export PICO_SDK_PATH=/pico-sdk
+export PICO_SDK_PATH=`pwd`
 cd pico-sdk
 git submodule update --init
 cd ..
