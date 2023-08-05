@@ -22,6 +22,8 @@ Lasty, several games are included to kickstart your game writing experience;
 
 All the ibraries and games are written in C++ as Python is typically too slow.
 
+# Quick Start
+To quickly compile picoarcade.uf2, you can run ``quickstart.sh`` to quickly make a build.
 
 # How to install and compile the picoarcade.uf2
 
